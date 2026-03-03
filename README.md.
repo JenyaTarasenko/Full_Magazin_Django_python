@@ -1,4 +1,8 @@
-touch README.md.
+Интернерт магазин Django 
+
+touch README.md
+touch .gitignore
+
 создание текстового файла
 ---------------Библиотеки-------------------
 
@@ -7,16 +11,108 @@ source venv/bin/activate
 
 pip install Django
 pip install --upgrade pip
+pip install psycopg2-binary                            Postgress
+pip install python-decouple                          .env 
+pip freeze > requirements.txt
 
 
 
+
+
+———————————————установка----------------------------
 python manage.py migrate
 python manage.py makemigrations
-
-
-
-
 
 django-admin startproject myshop
 cd myshop
 django-admin startapp shop
+ python manage.py createsuperuser
+———————————————установка—Postgres—————————————
+ версия локал
+psql —version  
+ запуск локально 15 версии 
+brew services start postgresql@15
+остановка 
+brew services stop postgresql@15
+-------------ПАРОЛЬ   0709—————————————————
+создать базу данных
+CREATE DATABASE myproject;
+создать юзер
+CREATE USER myuser WITH PASSWORD 'mypassword’;
+разрешить работать с этой базой 
+GRANT ALL PRIVILEGES ON DATABASE myproject TO myuser;
+Переключаемся на базу myproject
+\c myproject
+И выдаём права:
+GRANT ALL PRIVILEGES ON SCHEMA public TO myuser;
+
+\l -- список баз
+\du -- список пользователей
+\q
+——————————————————————————Корзина———————
+когда готово категории товара и список добавляем корзину 
+1  cart/cart.py 
+Создаме в cart/cart.py (все методы корзины хранение удаление и тд )
+ 2 cart/forms.py
+Создаем форму для корзины товара
+3  cart/views.py
+Создаем views для cart
+4 cart/urls.py
+Создаем urls.py  для cart
+шаблон для отображения карты 
+templates/
+cart/
+detail.html
+—————————————————————Полная проверка корзины————
+python manage.py shell
+
+from django.test import RequestFactory
+from django.contrib.sessions.middleware import SessionMiddleware
+from shop.models import Product
+from cart.cart import Cart
+
+# создаем запрос
+factory = RequestFactory()
+request = factory.get('/')
+
+# подключаем session middleware
+middleware = SessionMiddleware(lambda req: None)
+middleware.process_request(request)
+request.session.save()
+
+# создаем корзину
+cart = Cart(request)
+
+# берем продукт
+p = Product.objects.first()
+
+# добавляем
+cart.add(product=p, quantity=2)
+
+# смотрим содержимое
+cart.cart
+—————————————————————процессор для корзины————
+Создаем файл 
+context_processors.py.
+и в настройках settings.Template  
+‘cart.context_processors.cart’
+————————————Регистрация заказов клиент
+
+python manage.py startapp orders
+python manage.py makemigrations
+python manage.py migrate
+
+Добавляем модель в admin.py
+orders/admin.py
+Далее создаем форму ordes/form.py
+создаем orders/urls.py
+добавляем 
+orders/templetes/orders/order/create.html   created.html
+————————————LigpayPrivat----------
+4000 0000 0000 0077 
+'sandbox': 1, # Удали эту строку или поставь 0, когда будешь принимать реальные деньги
+две функции ы orders/liqpay.py   и orders/services.py
+
+
+
+

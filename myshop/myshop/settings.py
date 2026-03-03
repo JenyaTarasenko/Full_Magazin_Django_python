@@ -10,6 +10,9 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+#Оплата pip install liqpay-python
+LIQPAY_PUBLIC_KEY = config('LIQPAY_PUBLIC_KEY')
+LIQPAY_PRIVATE_KEY = config('LIQPAY_PRIVATE_KEY')
 
 
 

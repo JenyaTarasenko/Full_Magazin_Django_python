@@ -5,15 +5,30 @@
 <div class="order-info">
     <h3>Your order</h3>
     <ul>
+        <!-- {% for item in order.items.all %}
+        <li>
+            {{ item.quantity }}x {{ item.product.name }}
+            <span>${{ item.get_cost }}</span>
+        </li>
+        {% endfor %} -->
         {% for item in cart %}
         <li>
             {{ item.quantity }}x {{ item.product.name }}
-            <span>${{ item.total_price }}</span>
+            <span>${{ item.get_cost }}</span>
         </li>
         {% endfor %}
     </ul>
-    <p>Total: ${{ cart.get_total_price }}</p>
+    <p>Total: ${{ order.get_total_price }}</p>
 </div>
+<!-- {% if liqpay %}
+<form method="POST" action="https://www.liqpay.ua/api/3/checkout" accept-charset="utf-8">
+    <input type="hidden" name="data" value="{{ liqpay.data }}" />
+    <input type="hidden" name="signature" value="{{ liqpay.signature }}" />
+    <input type="submit" value="Оплатить заказ через LiqPay" class="button" />
+</form>
+{% else %} -->
+<p style="color: red;">Ошибка: данные для оплаты LiqPay не сформированы!</p>
+{% endif %}
 <form method="post" class="order-form">
     {{ form.as_p }}
     <p><input type="submit" value="Place order"></p> {% csrf_token %}
