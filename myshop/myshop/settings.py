@@ -24,6 +24,7 @@ INSTALLED_APPS = [
 
     'shop.apps.ShopConfig',#приложенеие
     'cart.apps.CartConfig', #Приложение корзины 
+    'orders.apps.OrdersConfig', #Приложение заказов
  
 ]
 
@@ -49,6 +50,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart', #добавить в settings.py в раздел TEMPLATES 'cart.context_processors.cart',
             ],
         },
     },
