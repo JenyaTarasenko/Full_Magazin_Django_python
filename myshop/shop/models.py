@@ -1,6 +1,4 @@
 from django.db import models
-
-from django.db import models
 from django.urls import reverse # Для генерации ссылок
 
 class Category(models.Model):
@@ -46,3 +44,5 @@ class Product(models.Model):
     # метод для получения ссылки на продукт
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
+    
+

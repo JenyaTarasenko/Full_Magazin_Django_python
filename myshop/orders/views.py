@@ -5,6 +5,7 @@ from .forms import OrderCreateForm
 from cart.cart import Cart
 from django.views.decorators.csrf import csrf_exempt
 from .services import get_liqpay_context
+from .telegram_bot import send_telegram_message
 
 def payment_success(request):
     #страница успеха оплаты 
@@ -18,6 +19,7 @@ def payment_cancel(request):
 
 @csrf_exempt # LiqPay присылает POST-запрос без нашего CSRF-токена
 def liqpay_webhook(request):
+    print("WEBHOOK CALLED")
     liqpay = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
     data = request.POST.get('data')
     signature = request.POST.get('signature')
@@ -33,7 +35,17 @@ def liqpay_webhook(request):
             order = Order.objects.get(id=order_id)
             order.paid = True
             order.save()
-            # ЗДЕСЬ МОЖНО ВЫЗВАТЬ ФУНКЦИЮ БОТА ТЕЛЕГРАМ
+            # 🔥 Формируем красивое сообщение
+            message = f"""
+                ✅ <b>Новый оплаченный заказ!</b>
+
+                📦 Заказ №{order.id}
+                👤 Имя: {order.first_name} {order.last_name}
+                📧 Email: {order.email}
+                💰 Сумма: {order.get_total_cost()} UAH
+                """
+
+            send_telegram_message(message)
             
     return HttpResponse()
 

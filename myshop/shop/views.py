@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Category, Product
 from cart.forms import CartAddProductForm
+from review.forms import ReviewForm  #форма отзыва
 
 
 # все продукты выводится в шаблон списком 
@@ -17,4 +18,6 @@ def product_list(request, category_slug=None):
 def product_detail(request, id, slug):
     product = get_object_or_404(Product,id=id, slug=slug, available=True)
     cart_product_form = CartAddProductForm()
-    return render(request, 'shop/product/detail.html',{'product': product, 'cart_product_form': cart_product_form})
+    #форма отзыва прилетела из myshop.review/forms.py
+    review_form = ReviewForm()
+    return render(request, 'shop/product/detail.html',{'product': product, 'cart_product_form': cart_product_form, 'review_form': review_form})

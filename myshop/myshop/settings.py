@@ -8,6 +8,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
 
+
+#Телеграм pip install python-telegram-bot
+TELEGRAM_BOT_TOKEN=config('TELEGRAM_BOT_TOKEN')
+TELEGRAM_CHAT_ID=config('TELEGRAM_CHAT_ID')
+
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 #Оплата pip install liqpay-python
@@ -25,9 +30,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+
+
     'shop.apps.ShopConfig',#приложенеие
     'cart.apps.CartConfig', #Приложение корзины 
     'orders.apps.OrdersConfig', #Приложение заказов
+    'review.apps.ReviewConfig', #Приложение отзывов
+    'accounts.apps.AccountsConfig', #Приложение аккаунтов
  
 ]
 
@@ -54,6 +63,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processors.cart', #добавить в settings.py в раздел TEMPLATES 'cart.context_processors.cart',
+           
             ],
         },
     },
@@ -123,3 +133,10 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # Это ключ, который будет использоваться для хранения корзины в поль- зовательском сеансе
 CART_SESSION_ID = 'cart'
+
+# Авторизация myshop/review
+AUTH_USER_MODEL = 'auth.User'
+#  после авторизации перенаправляет на главную страницу
+LOGIN_REDIRECT_URL = '/'
+#  после выхода перенаправляет на главную страницу
+LOGOUT_REDIRECT_URL = '/'
