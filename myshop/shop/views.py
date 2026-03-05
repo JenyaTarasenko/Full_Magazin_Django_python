@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Category, Product
 from cart.forms import CartAddProductForm
 from review.forms import ReviewForm  #форма отзыва
+from django.db.models import Q
 
 
 # все продукты выводится в шаблон списком 
@@ -21,3 +22,19 @@ def product_detail(request, id, slug):
     #форма отзыва прилетела из myshop.review/forms.py
     review_form = ReviewForm()
     return render(request, 'shop/product/detail.html',{'product': product, 'cart_product_form': cart_product_form, 'review_form': review_form})
+
+
+# поиск продуктов shop/product/search_results.html
+# поиск работает по name, description, category__name можно также сделать по бренду 
+def search_products(request):
+    query = request.GET.get('q', '')
+    results = Product.objects.filter( Q(name__icontains=query) |
+                                        Q(description__icontains=query) |
+                                        Q(category__name__icontains=query) 
+                                        # Q(brand__name__icontains=query)
+                                    ).distinct() if query else Product.objects.none()
+    
+    return render(request, 'include/search_results.html', {
+        'results': results,
+        'query': query
+    })

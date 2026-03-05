@@ -7,6 +7,7 @@
 
 {% block content %}
 {% include "include/menu.html" %}
+{% include "include/search_results.html" %}
 <div>
     <h1>{% if category %}{{ category.name }}{% else %}Products{% endif %}</h1>
     {% for product in products %}

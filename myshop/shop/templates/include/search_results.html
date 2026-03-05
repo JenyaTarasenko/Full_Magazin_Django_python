@@ -1,0 +1,61 @@
+<!-- <form method="get" action="{% url 'shop:search' %}">
+    <input type="text" name="q" placeholder="Поиск..." value="{{ query }}">
+    <button type="submit">Найти</button>
+</form>
+
+<h2>Результаты поиска по: "{{ query }}"</h2>
+
+{% if results %}
+<ul>
+    {% for product in results %}
+    <li>{{ product.name }}</li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Ничего не найдено</p>
+{% endif %} -->
+
+
+<form method="get" action="{% url 'shop:search' %}" class="flex gap-2 mb-6">
+    <input type="text" name="q" placeholder="Поиск..." value="{{ query }}" class="border rounded px-3 py-2 w-full">
+
+    <button class="bg-black text-white px-4 py-2 rounded">
+        Найти
+    </button>
+</form>
+
+
+<h2 class="text-xl font-semibold mb-6">
+    Результаты поиска: "{{ query }}"
+</h2>
+
+
+{% if results %}
+
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+    {% for product in results %}
+
+    <a href="{{ product.get_absolute_url }}" class="border rounded-lg p-4 hover:shadow transition">
+
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-40 object-cover mb-3 rounded">
+
+        <h3 class="font-medium text-lg mb-1">
+            {{ product.name }}
+        </h3>
+
+        <p class="text-gray-500">
+            {{ product.price }} грн
+        </p>
+
+    </a>
+
+    {% endfor %}
+
+</div>
+
+{% else %}
+
+<p class="text-gray-500">Ничего не найдено</p>
+
+{% endif %}
