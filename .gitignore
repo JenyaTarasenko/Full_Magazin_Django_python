@@ -19,9 +19,8 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 # Папка collectstatic (сюда Django собирает статику для сервера)
-staticfiles/
+
 # Папка с загруженными картинками товаров
-media/
 
 # --- Секреты (КРИТИЧЕСКИ ВАЖНО) ---
 .env
@@ -36,7 +35,7 @@ media/
 *~
 .project
 .pydevproject
-.settings/
+
 
 # --- Операционные системы ---
 .DS_Store
