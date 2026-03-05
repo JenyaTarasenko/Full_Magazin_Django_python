@@ -6,14 +6,35 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # DEBUG = True
 
 SECRET_KEY = config('SECRET_KEY')
-DEBUG = config('DEBUG', default=False, cast=bool)
+# DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
 
 
 #Телеграм pip install python-telegram-bot
 TELEGRAM_BOT_TOKEN=config('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHAT_ID=config('TELEGRAM_CHAT_ID')
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
+if DEBUG:
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+    'magazine.pythonanywhere.com',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://magazine.pythonanywhere.com",
+]
 
 #Оплата pip install liqpay-python
 LIQPAY_PUBLIC_KEY = config('LIQPAY_PUBLIC_KEY')
