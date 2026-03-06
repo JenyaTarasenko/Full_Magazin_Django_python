@@ -13,4 +13,4 @@ class Review(models.Model):
         unique_together = ('product', 'user')  # 1 отзыв на товар от 1 пользователя
 
     def __str__(self):
-        return f"{self.user.email} - {self.product.name}"
+        return f"{self.user.username} - {self.product.name}"

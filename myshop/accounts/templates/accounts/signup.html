@@ -1,7 +1,48 @@
-<h2>Регистрация</h2>
+<!-- <h2>Регистрация</h2>
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Зарегистрироваться</button>
 </form>
-<p>Уже есть аккаунт? <a href="{% url 'accounts:login' %}">Войти</a></p>
+<p>Уже есть аккаунт? <a href="{% url 'accounts:login' %}">Войти</a></p> -->
+
+
+<h2>Регистрация</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    {{ form.non_field_errors }}
+
+    <div>
+        <label>Имя</label>
+        {{ form.username }}
+        {{ form.username.errors }}
+    </div>
+
+    <div>
+        <label>Email</label>
+        {{ form.email }}
+        {{ form.email.errors }}
+    </div>
+
+    <div>
+        <label>Пароль</label>
+        {{ form.password1 }}
+        {{ form.password1.errors }}
+    </div>
+
+    <div>
+        <label>Повторите пароль</label>
+        {{ form.password2 }}
+        {{ form.password2.errors }}
+    </div>
+
+    <button type="submit">Зарегистрироваться</button>
+
+</form>
+
+<p>
+    Уже есть аккаунт?
+    <a href="{% url 'accounts:login' %}">Войти</a>
+</p>

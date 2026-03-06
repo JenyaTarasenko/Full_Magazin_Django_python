@@ -1,7 +1,29 @@
 <h2>Вход</h2>
+
+{% if messages %}
+{% for message in messages %}
+<p style="color:red;">{{ message }}</p>
+{% endfor %}
+{% endif %}
+
 <form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+
+    <div>
+        <label>Имя</label>
+        <input type="text" name="username">
+    </div>
+
+    <div>
+        <label>Пароль</label>
+        <input type="password" name="password">
+    </div>
+
     <button type="submit">Войти</button>
+
 </form>
-<p>Нет аккаунта? <a href="{% url 'accounts:signup' %}">Зарегистрироваться</a></p>
+
+<p>
+    Нет аккаунта?
+    <a href="{% url 'accounts:signup' %}">Регистрация</a>
+</p>

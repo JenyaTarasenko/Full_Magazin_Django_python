@@ -72,7 +72,7 @@
 <h3>Отзывы</h3>
 {% for review in product.reviews.all %}
 {% if review.user %}
-<p><strong>{{ review.user.email }}:</strong> {{ review.text }}</p>
+<p><strong>{{ review.user.username }}:</strong> {{ review.text }}</p>
 {% else %}
 <p><strong>Аноним:</strong> {{ review.text }}</p>
 {% endif %}

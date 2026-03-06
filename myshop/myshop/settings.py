@@ -10,6 +10,7 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = True
 
 
+
 #Телеграм pip install python-telegram-bot
 TELEGRAM_BOT_TOKEN=config('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHAT_ID=config('TELEGRAM_CHAT_ID')
@@ -27,6 +28,7 @@ else:
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ALLOWED_HOSTS = [
+    'http://127.0.0.1:8001',
     '127.0.0.1',
     'localhost',
     'magazine.pythonanywhere.com',
@@ -172,6 +174,6 @@ CART_SESSION_ID = 'cart'
 # Авторизация myshop/review
 AUTH_USER_MODEL = 'auth.User'
 #  после авторизации перенаправляет на главную страницу
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'accounts:login'
 #  после выхода перенаправляет на главную страницу
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'shop:product_list'
