@@ -19,7 +19,7 @@ class Category(models.Model):
     def get_absolute_url(self):
         # Это позволит Django самому находить путь к категории
         # Предполагаем, что в urls.py имя пути 'catalog:product_list_by_category'
-        return reverse('catalog:product_list_by_category', args=[self.slug])
+        return reverse('shop:product_list_by_category', args=[self.slug])
 
 
 class Product(models.Model):

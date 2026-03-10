@@ -1,61 +1,30 @@
-<!-- <form method="get" action="{% url 'shop:search' %}">
-    <input type="text" name="q" placeholder="Поиск..." value="{{ query }}">
-    <button type="submit">Найти</button>
-</form>
+<div class="flex flex-col items-center mt-20 px-4">
+    <!-- Форма поиска -->
+    <form method="get" action="{% url 'shop:search' %}" class="w-full max-w-2xl flex">
+        <input type="text" name="q" placeholder="Введите название товара..." value="{{ query|default:'' }}"
+            class="flex-grow border border-gray-300 rounded-l-3xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+        <button type="submit" class="bg-indigo-600 text-white px-6 py-3 rounded-r-3xl hover:bg-indigo-700 transition">
+            Найти
+        </button>
+    </form>
 
-<h2>Результаты поиска по: "{{ query }}"</h2>
+    {% if query %}
+    <h2 class="text-xl font-semibold mt-8 mb-6 text-center">
+        Результаты поиска: "{{ query }}"
+    </h2>
 
-{% if results %}
-<ul>
-    {% for product in results %}
-    <li>{{ product.name }}</li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>Ничего не найдено</p>
-{% endif %} -->
-
-
-<form method="get" action="{% url 'shop:search' %}" class="flex gap-2 mb-6">
-    <input type="text" name="q" placeholder="Поиск..." value="{{ query }}" class="border rounded px-3 py-2 w-full">
-
-    <button class="bg-black text-white px-4 py-2 rounded">
-        Найти
-    </button>
-</form>
-
-
-<h2 class="text-xl font-semibold mb-6">
-    Результаты поиска: "{{ query }}"
-</h2>
-
-
-{% if results %}
-
-<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-
-    {% for product in results %}
-
-    <a href="{{ product.get_absolute_url }}" class="border rounded-lg p-4 hover:shadow transition">
-
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-40 object-cover mb-3 rounded">
-
-        <h3 class="font-medium text-lg mb-1">
-            {{ product.name }}
-        </h3>
-
-        <p class="text-gray-500">
-            {{ product.price }} грн
-        </p>
-
-    </a>
-
-    {% endfor %}
-
+    {% if results %}
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-6xl">
+        {% for product in results %}
+        <a href="{{ product.get_absolute_url }}" class="border rounded-lg p-4 hover:shadow-lg transition">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full h-40 object-cover mb-3 rounded">
+            <h3 class="font-medium text-lg mb-1">{{ product.name }}</h3>
+            <p class="text-gray-500">{{ product.price }} грн</p>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-gray-500 text-center">Ничего не найдено</p>
+    {% endif %}
+    {% endif %}
 </div>
-
-{% else %}
-
-<p class="text-gray-500">Ничего не найдено</p>
-
-{% endif %}

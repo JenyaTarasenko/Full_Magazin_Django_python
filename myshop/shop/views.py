@@ -5,15 +5,27 @@ from review.forms import ReviewForm  #форма отзыва
 from django.db.models import Q
 
 
+
+
+def about(request):
+    return render(request, "pages/about.html")
+
+def contacts(request):
+    return render(request, "pages/contacts.html")
+
+
+
 # все продукты выводится в шаблон списком 
 def product_list(request, category_slug=None): 
     category = None
+    # категории товара вывод на главной странице 
     categories = Category.objects.all()
+    # все продукты вывод на главной странице 
     products = Product.objects.filter(available=True) 
     if category_slug:
         category = get_object_or_404(Category, slug=category_slug)
         products = products.filter(category=category) 
-    return render(request,'shop/product/list.html', {'category': category, 'categories': categories, 'products': products})
+    return render(request,'shop/product/product_list.html', {'category': category, 'categories': categories, 'products': products})
 
 # вывод одного продукта
 def product_detail(request, id, slug):

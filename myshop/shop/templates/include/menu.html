@@ -1,57 +1,126 @@
-<nav class="bg-white shadow px-4 py-3 flex justify-between items-center">
-    <!-- Логотип -->
-    <div class="text-xl font-bold">MyShop</div>
+{% load static %}
+<nav class="bg-white border-b-2 border-blue-800 fixed top-0 left-0 w-full z-50">
+    <div class=" px-3">
+        <div class="flex justify-between h-16 items-center">
 
-    <!-- Меню -->
-    <div class="flex items-center space-x-4">
-
-        <!-- Другие ссылки -->
-        <a href="/" class="text-gray-700 hover:text-indigo-600">Главная</a>
-        <a href="/shop/" class="text-gray-700 hover:text-indigo-600">Каталог</a>
-
-        <!-- Иконка аккаунта -->
-        <div class="relative">
-            <button id="user-menu-button" class="flex items-center space-x-1 focus:outline-none">
-                <!-- Heroicon: User -->
-                <svg class="w-6 h-6 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M5.121 17.804A9 9 0 1112 21a9 9 0 01-6.879-3.196z" />
-                </svg>
-            </button>
-
-            <!-- Выпадающее меню -->
-            <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg z-50">
-
-                {% if user.is_authenticated %}
-
-                <p>Привет, {{ user.username }}</p>
-
-                <a href="{% url 'accounts:logout' %}">Выйти</a>
-
-                {% else %}
-
-                <a href="{% url 'accounts:login' %}">Войти</a>
-                <a href="{% url 'accounts:signup' %}">Регистрация</a>
-
-                {% endif %}
+            <!-- Левый блок: Логотип -->
+            <div class="flex-shrink-0 flex items-center">
+                <a href="{% url 'shop:product_list' %}" class="text-xl font-bold text-blue-600">MyShop</a>
             </div>
+
+            <!-- Центр: Пункты навигации (десктоп) -->
+            <div class="hidden md:flex space-x-6">
+                <a href="{% url 'shop:product_list' %}"
+                    class="text-blue-800 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium uppercase">Главная</a>
+                <a href="#"
+                    class="text-blue-800 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium uppercase">Категории</a>
+                <a href="#"
+                    class="text-blue-800 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium uppercase">О
+                    нас</a>
+                <a href="#"
+                    class="text-blue-800 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium uppercase">Контакты</a>
+
+                <!-- Правый блок: Аутентификация -->
+                <div class="hidden md:flex space-x-6">
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'accounts:logout' %}"
+                        class="text-blue-800 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium uppercase">Выйти</a>
+                    {% else %}
+                    <a href="{% url 'accounts:login' %}"
+                        class="text-blue-800 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium uppercase">Войти</a>
+                    <a href="{% url 'accounts:signup' %}"
+                        class="text-blue-800 hover:text-blue-900 px-3 py-2 rounded-md text-sm font-medium uppercase">Регистрация</a>
+                    {% endif %}
+                </div>
+                <!-- Аутентификация -->
+            </div>
+
+            <!-- Правый блок: Корзина -->
+            <div class="flex items-center space-x-4">
+
+                <!-- Корзина  и аутентификация-->
+                <div class="relative flex items-center space-x-2 flex-row gap-5">
+                    <a href="{% url 'shop:search' %}"><img src="{% static 'img/search.svg' %}" alt="Search"
+                            class="w-5 h-5"></a>
+                    <div class="flex items-center space-x-2 flex-row">
+                        <img src="{% static 'img/User.svg' %}" alt="User" class="w-5 h-5">
+                        {% if user.is_authenticated %}
+                        <span class="text-blue-800 font-medium">{{ user.username }}</span>
+                        {% else %}
+                        <span class="text-blue-800 font-medium text-md">Гость</span>
+                        {% endif %}
+                    </div>
+                    {% with total_items=cart|length %}
+                    <a href="{% url 'cart:cart_detail' %}" class="flex items-center text-blue-800 hover:text-blue-900">
+                        <img src="{% static 'img/Cart.svg' %}" alt="Cart" class="w-5 h-5">
+                        {% if total_items > 0 %}
+                        <span class="ml-1 font-bold text-md">{{ total_items }}</span>
+                        {% endif %}
+                    </a>
+                    {% endwith %}
+                </div>
+                <!-- Правый блок: Корзина -->
+
+                <!-- Бургер меню -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button"
+                        class="relative w-8 h-8 flex flex-col justify-between items-center p-2 text-blue-800 hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+
+                        <!-- Линии бургера -->
+                        <span
+                            class="block w-8 h-0.5 bg-current transform transition duration-300 ease-in-out origin-center"></span>
+                        <span
+                            class="block w-8 h-0.5 bg-current transform transition duration-300 ease-in-out origin-center"></span>
+                        <span
+                            class="block w-8 h-0.5 bg-current transform transition duration-300 ease-in-out origin-center"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Мобильное меню -->
+    <div id="mobile-menu" class="hidden md:hidden px-2 pt-2 pb-3 space-y-1">
+        <a href="{% url 'shop:product_list' %}"
+            class="block px-3 py-2 rounded-md text-base font-medium text-blue-800 hover:text-blue-900">Главная</a>
+        <a href="#"
+            class="block px-3 py-2 rounded-md text-base font-medium text-blue-800 hover:text-blue-900">Категории</a>
+        <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-blue-800 hover:text-blue-900">О нас</a>
+        <a href="#"
+            class="block px-3 py-2 rounded-md text-base font-medium text-blue-800 hover:text-blue-900">Контакты</a>
+        <div class="">
+            {% if user.is_authenticated %}
+            <span class="hidden md:inline text-gray-700">Привет, {{ user.username }}</span>
+            <a href="{% url 'accounts:logout' %}"
+                class="text-blue-800 hover:text-blue-900 px-1 py-2 rounded-md text-sm font-medium">Выйти</a>
+            {% else %}
+            <a href="{% url 'accounts:login' %}"
+                class="text-blue-800 hover:text-blue-900 px-1 py-2 rounded-md text-sm font-medium">Войти</a>
+            <a href="{% url 'accounts:signup' %}"
+                class="text-blue-800 hover:text-blue-900 px-1 py-2 rounded-md text-sm font-medium">Регистрация</a>
+            {% endif %}
         </div>
     </div>
 </nav>
 
 <script>
-    const button = document.getElementById('user-menu-button');
-    const menu = document.getElementById('user-menu');
+    // анимация бургера
+    document.addEventListener('DOMContentLoaded', function () {
+        const btn = document.getElementById('mobile-menu-button');
+        const menu = document.getElementById('mobile-menu');
+        const lines = btn.querySelectorAll('span');
 
-    button.addEventListener('click', () => {
-        menu.classList.toggle('hidden');
-    });
+        btn.addEventListener('click', () => {
+            menu.classList.toggle('hidden');
 
-    // Закрытие меню при клике вне
-    document.addEventListener('click', (e) => {
-        if (!button.contains(e.target) && !menu.contains(e.target)) {
-            menu.classList.add('hidden');
-        }
+            // Анимация линий
+            lines[0].classList.toggle('rotate-45');
+            lines[0].classList.toggle('translate-y-2');
+
+            lines[1].classList.toggle('opacity-0');
+
+            lines[2].classList.toggle('-rotate-45');
+            lines[2].classList.toggle('-translate-y-2');
+        });
     });
 </script>
