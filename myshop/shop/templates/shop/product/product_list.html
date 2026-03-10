@@ -2,7 +2,41 @@
 {% load static %}
 
 {% block content %}
-<div class="mt-[120px]">
+<div class="mt-[50px]">
+
+    <!-- вывод сладера на главный экран -->
+    <!-- {% for slide in slides %}
+
+    <div class="w-20 h-20">
+
+        {% for image in slide.images.all %}
+        <img src="{{ image.image.url }}">
+        {% endfor %}
+
+    </div>
+
+    {% endfor %} -->
+    <!-- вывод сладера на главный экран -->
+    <div class="slides flex transition-transform duration-700">
+        {% for slide in slides %}
+
+        {% for image in slide.images.all %}
+
+        <div class="relative min-w-full bg-gray-100 flex justify-center items-center aspect-[16/9] sm:aspect-[16/7]">
+
+            <img src="{{ image.image.url }}" class="w-full h-auto sm:h-[500px] md:h-[650px] object-contain">
+
+            <div class="absolute inset-0 flex items-center">
+                {{ slide.title }}
+                {{ slide.subtitle }}
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+        {% endfor %}
+    </div>
     <!-- Вывод категорий товара  -->
 
     {% for c in categories %}
@@ -29,3 +63,24 @@
 </div>
 
 {% endblock %}
+
+
+
+
+
+<script>
+    const slides = document.querySelector(".slides");
+    const totalSlides = slides.children.length;
+    let index = 0;
+
+    function showSlide(i) {
+        slides.style.transform = `translateX(-${i * 100}%)`;
+    }
+
+    // Авто слайд
+    setInterval(() => {
+        index++;
+        if (index >= totalSlides) index = 0;
+        showSlide(index);
+    }, 5000);
+</script>

@@ -44,5 +44,38 @@ class Product(models.Model):
     # метод для получения ссылки на продукт
     def get_absolute_url(self):
         return reverse('shop:product_detail', args=[self.id, self.slug])
+
+
+# модель слайдера для загрузки слайдера на главной странице
+
+class Slider(models.Model):
+
+    title = models.CharField(max_length=200)
+    subtitle = models.CharField(max_length=300)
+
+    active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.title
+
+
+class SliderImage(models.Model):
+
+    slider = models.ForeignKey(
+        Slider,
+        related_name="images",
+        on_delete=models.CASCADE
+    )
+
+    image = models.ImageField(upload_to="slider/")
+
+    order = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Image for {self.slider.title}"
+
+
+    class Meta:
+        ordering = ["order"]
     
 
